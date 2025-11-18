@@ -47,6 +47,7 @@ namespace BadNews
             if (env.IsDevelopment())
                 mvcBuilder.AddRazorRuntimeCompilation();
             services.AddSignalR();
+            services.AddServerSideBlazor();
         }
 
         // В этом методе конфигурируется последовательность обработки HTTP-запроса
@@ -85,6 +86,7 @@ namespace BadNews
                 });
                 endpoints.MapControllerRoute("default", "{controller=News}/{action=Index}/{id?}");
                 endpoints.MapHub<CommentsHub>("/commentsHub");
+                endpoints.MapBlazorHub();
             });
             app.MapWhen(context => context.Request.IsElevated(), branchApp =>
             {

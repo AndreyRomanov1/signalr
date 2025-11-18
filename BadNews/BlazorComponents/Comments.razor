@@ -1,0 +1,23 @@
+@using BadNews.Repositories.Comments
+@inject CommentsRepository commentsRepository;
+<div>
+    @foreach (var comment in comments)
+    {
+        <li>@RenderComment(comment)</li>
+    }
+</div>
+
+@code {
+    private IReadOnlyCollection<Comment> comments = new List<Comment>();
+
+    [Parameter]
+    public Guid ArticleId { get; set; }
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        comments = commentsRepository.GetComments(ArticleId);
+        return base.SetParametersAsync(parameters);
+    }
+
+    private string RenderComment(Comment comment) => $"{comment.User} говорит: {comment.Value}";
+}
